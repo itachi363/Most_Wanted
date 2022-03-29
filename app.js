@@ -65,7 +65,7 @@ function mainMenu(person, people) {
         case "info":
             //! TODO: Declare a findPersonInfo function //////////////////////////////////////////
             // HINT: Look for a person-object stringifier utility function to help
-            let personInfo = findPersonInfo(person[0]);
+            let personInfo = findPersonInfo(person);
             alert(personInfo);
             break;
         case "family":
@@ -183,3 +183,10 @@ function chars(input) {
 
 //////////////////////////////////////////* End Of Starter Code *//////////////////////////////////////////
 // Any additional functions can be written below this line 👇. Happy Coding! 😁
+
+function findPersonInfo(foundPerson) {
+    let personInfo = foundPerson.map(function(pi){
+        return `Full Name: ${pi.firstName} ${pi.lastName}\nGender: ${pi.gender}\nDOB: ${pi.dob}\nHeight: ${pi.height}\nEyecolor: ${pi.eyeColor}\nOccupation: ${pi.occupation}`
+    })
+    return personInfo
+}
