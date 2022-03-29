@@ -71,7 +71,7 @@ function mainMenu(person, people) {
         case "family":
             //! TODO: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
-            let personFamily = findPersonFamily(person[0], people);
+            let personFamily = findPersonFamily(person, people);
             alert(personFamily);
             break;
         case "descendants":
@@ -189,4 +189,25 @@ function findPersonInfo(foundPerson) {
         return `Full Name: ${pi.firstName} ${pi.lastName}\nGender: ${pi.gender}\nDOB: ${pi.dob}\nHeight: ${pi.height}\nEyecolor: ${pi.eyeColor}\nOccupation: ${pi.occupation}`
     })
     return personInfo
+}
+
+function findPersonFamily(person, people, parentFinder) {
+    results = parentFinder(person, people);
+    let familyMember = results.map(function(fm) {
+        return `Parents: ${fm.firstName}` 
+    })
+    return familyMember
+}
+
+function parentFinder(person, people) {
+    
+    let results = people.filter(function(fm){
+        if(people.id === person.parents) {
+            return true
+        } 
+        else {
+            return false
+        }
+    }) 
+    return results
 }
