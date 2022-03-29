@@ -77,7 +77,7 @@ function mainMenu(person, people) {
         case "descendants":
             //! TODO: Declare a findPersonDescendants function //////////////////////////////////////////
             // HINT: Review recursion lecture + demo for bonus user story
-            let personDescendants = findPersonDescendants(person[0], people);
+            let personDescendants = findPersonDescendants(person[0], people, filterPersonDescendants);
             alert(personDescendants);
             break;
         case "restart":
@@ -208,4 +208,21 @@ function parentFinder(person, people) {
         
     }) 
     return results
+}
+
+function findPersonDescendants(person, people, callback) {
+    let results = callback(person, people);
+    let descendants = results.map(function(pd){
+        return `Children: ${pd.firstName} ${pd.lastName}`
+    })
+    .join("\n")
+    return descendants
+}
+
+function filterPersonDescendants(person, people) {
+    let results = people.filter(function(pd){
+        if(person.id.includes(pd[0])) {
+            return true
+        }
+    })
 }
