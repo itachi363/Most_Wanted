@@ -210,6 +210,19 @@ function parentFinder(person, people) {
     return results
 }
 
+// function findPersonDescendants(person, people, array = []) {
+//     let subArray = people.parents;
+//     array = [people];
+//     if (subArray.length === 0) {
+//         return array;
+//     }
+//     for (let i = 0; i < subArray.length; i++) {
+//         array = array.concat(findPersonDescendants(subArray[i])
+//         );
+//     }
+//     return array
+// }
+
 function findPersonDescendants(person, people, callback) {
     let results = callback(person, people);
     let descendants = results.map(function(pd){
@@ -221,8 +234,9 @@ function findPersonDescendants(person, people, callback) {
 
 function filterPersonDescendants(person, people) {
     let results = people.filter(function(pd){
-        if(person.id.includes(pd[0])) {
+        if(pd.parents.includes(person.id)) {
             return true
         }
     })
+    return results
 }
