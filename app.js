@@ -73,13 +73,13 @@ function mainMenu(person, people) {
         case "family":
             //! TODO: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
-            let personFamily = findPersonFamily(person[0], people);
+            let personFamily = findPersonFamily(person[0], people, parentFinder);
             alert(personFamily);
             break;
         case "descendants":
             //! TODO: Declare a findPersonDescendants function //////////////////////////////////////////
             // HINT: Review recursion lecture + demo for bonus user story
-            let personDescendants = findPersonDescendants(person[0], people);
+            let personDescendants = findPersonDescendants(person[0], people, filterPersonDescendants);
             alert(personDescendants);
             break;
         case "restart":
@@ -193,30 +193,56 @@ function findPersonInfo(foundPerson) {
     return personInfo
 }
 
-function findPersonDescendants(person,people) {
-    let results = people.filter(function(fd) {
-        if(fd.parents.includes(person.id)) {
-            return true;
-        }
+function findPersonFamily(person, people, callback) {
+    let results = callback(person, people);
+    let familyMember = results.map(function(fm) {
+        return `Parents: ${fm.firstName} ${fm.lastName}` 
     })
-    return results;
+    .join("\n")
+    return familyMember
 }
 
+function parentFinder(person, people) {  
+    let results = people.filter(function(fm){
+        if(person.parents.includes(fm.id)) {
+            return true
+        } 
+        
+    }) 
+    return results
+}
 
-
-// function findPersonDescendants(person,people=[]){
-//     let subArray = person.parents;
-//     people = [person];
-//     if (subArray.length === 0){
-//         return subArray;
+// function findPersonDescendants(person, people, array = []) {
+//     let subArray = people.parents;
+//     array = [people];
+//     if (subArray.length === 0) {
+//         return array;
 //     }
 //     for (let i = 0; i < subArray.length; i++) {
-//         people = people.concat(
-//             findPersonDescendants(subArray[i])
+//         array = array.concat(findPersonDescendants(subArray[i])
 //         );
 //     }
-//     return subArray
+//     return array
 // }
+
+function findPersonDescendants(person, people, callback) {
+    let results = callback(person, people);
+    let descendants = results.map(function(pd){
+        return `Children: ${pd.firstName} ${pd.lastName}`
+    })
+    .join("\n")
+    return descendants
+}
+
+function filterPersonDescendants(person, people) {
+    let results = people.filter(function(pd){
+        if(pd.parents.includes(person.id)) {
+            return true
+        }
+    })
+    return results
+}
+
 
 function searchByTrait(people) {
     let userInputProp = prompt('Enter the trait you want to search by: ');
@@ -228,4 +254,3 @@ function searchByTrait(people) {
     })
     return foundPeople
 }
-
