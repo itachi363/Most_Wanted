@@ -32,7 +32,8 @@ function app(people) {
             //! TODO: Declare a searchByTrait function //////////////////////////////////////////
             searchResults = searchByTrait(people);
             alert(displayPeople(searchResults));
-            searchResults = searchByName(people);
+            let narrowing = prompt("Please select a number starting with 0 of the person you want")
+            searchResults = searchResults[narrowing]
             break;
         default:
             // Re-initializes the app() if neither case was hit above. This is an instance of recursion.
@@ -248,9 +249,17 @@ function searchByTrait(people) {
     let userInputProp = prompt('Enter the trait you want to search by: ');
     let userInputVal = prompt('Enter a description of the trait you chose: ');
     let foundPeople = people.filter(function(el) {
-        if (el[userInputProp].includes(userInputVal)){
+        if (el[userInputProp] === (userInputVal)){
             return true
         }
     })
+    alert(displayPeople(foundPeople))
+    let cont = prompt('would you like to continue? yes or no')
+        if(cont === "yes") {
+            searchByTrait(foundPeople)
+        }
+        else if(cont === "no") {
+            return foundPeople
+        }
     return foundPeople
 }
