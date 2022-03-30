@@ -31,6 +31,8 @@ function app(people) {
         case "no":
             //! TODO: Declare a searchByTrait function //////////////////////////////////////////
             searchResults = searchByTrait(people);
+            alert(displayPeople(searchResults));
+            searchResults = searchByName(people);
             break;
         default:
             // Re-initializes the app() if neither case was hit above. This is an instance of recursion.
@@ -71,7 +73,7 @@ function mainMenu(person, people) {
         case "family":
             //! TODO: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
-            let personFamily = findPersonFamily(person, people);
+            let personFamily = findPersonFamily(person[0], people);
             alert(personFamily);
             break;
         case "descendants":
@@ -191,23 +193,39 @@ function findPersonInfo(foundPerson) {
     return personInfo
 }
 
-function findPersonFamily(person, people, parentFinder) {
-    results = parentFinder(person, people);
-    let familyMember = results.map(function(fm) {
-        return `Parents: ${fm.firstName}` 
+function findPersonDescendants(person,people) {
+    let results = people.filter(function(fd) {
+        if(fd.parents.includes(person.id)) {
+            return true;
+        }
     })
-    return familyMember
+    return results;
 }
 
-function parentFinder(person, people) {
-    
-    let results = people.filter(function(fm){
-        if(people.id === person.parents) {
+
+
+// function findPersonDescendants(person,people=[]){
+//     let subArray = person.parents;
+//     people = [person];
+//     if (subArray.length === 0){
+//         return subArray;
+//     }
+//     for (let i = 0; i < subArray.length; i++) {
+//         people = people.concat(
+//             findPersonDescendants(subArray[i])
+//         );
+//     }
+//     return subArray
+// }
+
+function searchByTrait(people) {
+    let userInputProp = prompt('Enter the trait you want to search by: ');
+    let userInputVal = prompt('Enter a description of the trait you chose: ');
+    let foundPeople = people.filter(function(el) {
+        if (el[userInputProp].includes(userInputVal)){
             return true
-        } 
-        else {
-            return false
         }
-    }) 
-    return results
+    })
+    return foundPeople
 }
+
