@@ -229,7 +229,7 @@ function parentFinder(person, people) {
 function findPersonDescendants(person, people, callback) {
     let results = callback(person, people);
     let descendants = results.map(function(pd){
-        return `Children: ${pd.firstName} ${pd.lastName}`
+        return `Descendants: ${pd.firstName} ${pd.lastName}`
     })
     .join("\n")
     return descendants
@@ -241,7 +241,11 @@ function filterPersonDescendants(person, people) {
             return true
         }
     })
-    return results
+    for (let i = 0; i < tempPeople.length; i++) {
+
+        let tempPeople = results.concat(filterPersonDescendants(tempPeople[i], people))
+    }
+    return tempPeople
 }
 
 
