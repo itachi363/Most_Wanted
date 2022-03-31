@@ -219,12 +219,20 @@ function findPersonFamily(person,people) {
     let spouse = findSpouse(person,people);
     let currentSpouse;
     let children = findPersonChildren(person,people)
+    let siblings = findSiblings(person, people)
+
 
      
     if(spouse[0]) {
         currentSpouse = `${spouse[0].firstName} ${spouse[0].lastName}`
     }
-    alert(`Family members are:\n${parents}\nSpouse: ${currentSpouse}\n${children}`)
+    alert(`Family members are:\n${parents}\nSpouse: ${currentSpouse}\n${children}\n${siblings}`)
+}
+
+function findSiblings(person, people) {
+    let parents = parentFinder(person, people);
+    let siblings = findPersonChildrenTwo(parents[0], people);
+    return siblings
 }
 
 function findSpouse(person,people) {
@@ -234,6 +242,15 @@ function findSpouse(person,people) {
         }
     })
     return spouse
+}
+
+function findPersonChildrenTwo(person, people) {
+    let results = filterPersonChildren(person, people);
+    let descendants = results.map(function(pd){
+        return `Siblings: ${pd.firstName} ${pd.lastName}`
+    })
+    .join("\n")
+    return descendants
 }
 
 function findPersonChildren(person, people) {
