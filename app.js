@@ -246,6 +246,7 @@ function filterPersonDescendants(person, people) {
 
 
 function searchByTrait(people) {
+    let tempPeople = people
     let userInputProp = prompt('Enter the trait you want to search by: ');
     let userInputVal = prompt('Enter a description of the trait you chose: ');
     let foundPeople = people.filter(function(el) {
@@ -254,12 +255,14 @@ function searchByTrait(people) {
         }
     })
     alert(displayPeople(foundPeople))
+    // Using recursion continue filtering
     let cont = prompt('would you like to continue? yes or no')
-        if(cont === "yes") {
-            searchByTrait(foundPeople)
-        }
-        else if(cont === "no") {
-            return foundPeople
-        }
-    return foundPeople
+    if(cont === "yes") {
+        tempPeople = searchByTrait(foundPeople)
+    } 
+    else 
+    {tempPeople=foundPeople}
+    
+    // Once filtering is done move back up the call stack return the current results
+    return tempPeople
 }
