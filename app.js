@@ -80,7 +80,7 @@ function mainMenu(person, people) {
         case "descendants":
             //! TODO: Declare a findPersonDescendants function //////////////////////////////////////////
             // HINT: Review recursion lecture + demo for bonus user story
-            let personDescendants = findPersonDescendants(person[0], people, filterPersonDescendants);
+            let personDescendants = findPersonDescendants(person[0], people);
             alert(personDescendants);
             break;
         case "restart":
@@ -194,7 +194,7 @@ function findPersonInfo(foundPerson) {
     return personInfo
 }
 
-function findPersonFamily(person, people) {
+function findFamilyParent(person, people) {
     let results = parentFinder(person, people);
     let familyMember = results.map(function(fm) {
         return `Parent: ${fm.firstName} ${fm.lastName} ` 
@@ -214,8 +214,8 @@ function parentFinder(person, people) {
     return results
 }
 
-function findFamily(person,people) {
-    let parents = findPersonFamily(person, people);
+function findPersonFamily(person,people) {
+    let parents = findFamilyParent(person, people);
     let spouse = findSpouse(person,people);
     let currentSpouse;
     let children = findPersonChildren(person,people)
@@ -266,8 +266,8 @@ function filterPersonChildren(person, people) {
 //     return array
 // }
 
-function findPersonDescendants(person, people, callback) {
-    let results = callback(person, people);
+function findPersonDescendants(person, people) {
+    let results = filterPersonDescendants(person, people)
     let descendants = results.map(function(pd){
         return `Descendants: ${pd.firstName} ${pd.lastName}`
     })
@@ -276,21 +276,18 @@ function findPersonDescendants(person, people, callback) {
 }
 
 function filterPersonDescendants(person, people) {
-
-    if(tempPeople.length === 0) {
-        let tempPeople = []
-    }
+    let tempPeople;
     let results = people.filter(function(pd){
         if(pd.parents.includes(person.id)) {
             return true
         }
     })
-    let temp = results
-    tempPeople.append(temp)
+    // let temp = results
+    // tempPeople.append(temp)
     for (let i = 0; i < tempPeople.length; i++) {
         // tempPeople.append(newPeople)
         // console.log("newPeople: ", newPeople)
-        filterPersonDescendants(tempPeople[i],people)
+        tempPeople = results.concat(filterPersonDescendants(tempPeople[i], people))
     }
     return tempPeople
 }
