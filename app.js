@@ -220,8 +220,6 @@ function findPersonFamily(person,people) {
     let currentSpouse;
     let children = findPersonChildren(person,people)
     let siblings = findSiblings(person, people)
-
-
      
     if(spouse[0]) {
         currentSpouse = `${spouse[0].firstName} ${spouse[0].lastName}`
@@ -292,22 +290,30 @@ function findPersonDescendants(person, people) {
     return descendants
 }
 
-function filterPersonDescendants(person, people) {
-    let tempPeople;
+function filterPersonDescendants(person, people, tempPeople = []) {
     let results = people.filter(function(pd){
         if(pd.parents.includes(person.id)) {
             return true
         }
     })
-    // let temp = results
-    // tempPeople.append(temp)
-    for (let i = 0; i < tempPeople.length; i++) {
-        // tempPeople.append(newPeople)
-        // console.log("newPeople: ", newPeople)
-        tempPeople = results.concat(filterPersonDescendants(tempPeople[i], people))
-    }
-    return tempPeople
+    return results
 }
+
+// function filterPersonDescendants(person, people, tempPeople = []) {
+//     tempPeople = [person]
+//     let results = people.filter(function(pd){
+//         if(pd.parents.includes(person.id)) {
+//             return true
+//         }
+//     })
+//     if(results.length === 0) {
+//         return tempPeople
+//     }
+//     for (let i = 0; i < tempPeople.length; i++) {
+//         tempPeople = results.concat(filterPersonDescendants(tempPeople[i], people))
+//     }
+//     return tempPeople
+// }
 
 
 function searchByTrait(people) {
