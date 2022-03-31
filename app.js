@@ -236,14 +236,20 @@ function findPersonDescendants(person, people, callback) {
 }
 
 function filterPersonDescendants(person, people) {
+    if(tempPeople.length === 0) {
+        var tempPeople = []
+    }
     let results = people.filter(function(pd){
         if(pd.parents.includes(person.id)) {
             return true
         }
     })
+    let temp = results
+    tempPeople.append(temp)
     for (let i = 0; i < tempPeople.length; i++) {
-
-        let tempPeople = results.concat(filterPersonDescendants(tempPeople[i], people))
+        // tempPeople.append(newPeople)
+        // console.log("newPeople: ", newPeople)
+        filterPersonDescendants(tempPeople[i],people)
     }
     return tempPeople
 }
