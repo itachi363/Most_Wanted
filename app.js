@@ -74,7 +74,7 @@ function mainMenu(person, people) {
         case "family":
             //! TODO: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
-            let personFamily = findPersonFamily(person[0], people, parentFinder);
+            let personFamily = findPersonFamily(person[0], people);
             alert(personFamily);
             break;
         case "descendants":
@@ -194,13 +194,14 @@ function findPersonInfo(foundPerson) {
     return personInfo
 }
 
-function findPersonFamily(person, people, callback) {
-    let results = callback(person, people);
+function findPersonFamily(person, people) {
+    let results = parentFinder(person, people);
     let familyMember = results.map(function(fm) {
-        return `Parents: ${fm.firstName} ${fm.lastName}` 
+        return `Parent: ${fm.firstName} ${fm.lastName} ` 
     })
     .join("\n")
     return familyMember
+    
 }
 
 function parentFinder(person, people) {  
@@ -213,6 +214,45 @@ function parentFinder(person, people) {
     return results
 }
 
+function findFamily(person,people) {
+    let parents = findPersonFamily(person, people);
+    let spouse = findSpouse(person,people);
+    let currentSpouse;
+    let children = findPersonChildren(person,people)
+
+     
+    if(spouse[0]) {
+        currentSpouse = `${spouse[0].firstName} ${spouse[0].lastName}`
+    }
+    alert(`Family members are:\n${parents}\nSpouse: ${currentSpouse}\n${children}`)
+}
+
+function findSpouse(person,people) {
+    let spouse = people.filter(function(el) {
+        if(el.id === person.currentSpouse) {
+            return true;
+        }
+    })
+    return spouse
+}
+
+function findPersonChildren(person, people) {
+    let results = filterPersonChildren(person, people);
+    let descendants = results.map(function(pd){
+        return `Children: ${pd.firstName} ${pd.lastName}`
+    })
+    .join("\n")
+    return descendants
+}
+
+function filterPersonChildren(person, people) {
+    let results = people.filter(function(pd){
+        if(pd.parents.includes(person.id)) {
+            return true
+        }
+    })
+    return results
+}
 // function findPersonDescendants(person, people, array = []) {
 //     let subArray = people.parents;
 //     array = [people];
@@ -236,8 +276,9 @@ function findPersonDescendants(person, people, callback) {
 }
 
 function filterPersonDescendants(person, people) {
+
     if(tempPeople.length === 0) {
-        var tempPeople = []
+        let tempPeople = []
     }
     let results = people.filter(function(pd){
         if(pd.parents.includes(person.id)) {
